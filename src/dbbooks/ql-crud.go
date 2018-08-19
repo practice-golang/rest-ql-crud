@@ -1,6 +1,8 @@
 package dbbooks
 
 import (
+	"fmt"
+	"reflect"
 	"strconv"
 
 	"github.com/cznic/ql"
@@ -68,7 +70,7 @@ func InsertData(book *Book, table string, dbname string) error {
 }
 
 // SelectData : cRud
-func SelectData(id uint, table string, dbname string) ([][]interface{}, error) {
+func SelectData(id uint, table string, dbname string) (result []Book, err error) {
 	db, _ := ql.OpenFile(dbname, &ql.Options{CanCreate: true, RemoveEmptyWAL: true})
 	defer db.Close()
 
@@ -90,7 +92,15 @@ func SelectData(id uint, table string, dbname string) ([][]interface{}, error) {
 
 	data, _ := s[0].Rows(999, 0)
 
-	return data, nil
+	book := Book{}
+	result = []Book{}
+	for _, d := range data {
+		fmt.Println("ID maybe", reflect.TypeOf(d[0].(uint64)), d[0].(uint64))
+		book.ID, book.Title, book.Author = uint(d[0].(uint64)), d[1].(string), d[2].(string)
+		result = append(result, book)
+	}
+
+	return result, nil
 }
 
 // UpdateData : crUd
