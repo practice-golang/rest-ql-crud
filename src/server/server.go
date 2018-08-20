@@ -19,8 +19,6 @@ type ResultResponse struct{ Message string }
 func index(c echo.Context) error {
 	data, _ := dbbooks.SelectData(0, table, dbname)
 
-	// fmt.Println(data)
-
 	return c.JSON(http.StatusOK, data)
 }
 

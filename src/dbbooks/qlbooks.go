@@ -1,8 +1,7 @@
 package dbbooks
 
 import (
-	"fmt"
-	"reflect"
+	"math/big"
 	"strconv"
 
 	"github.com/cznic/ql"
@@ -95,8 +94,8 @@ func SelectData(id uint, table string, dbname string) (result []Book, err error)
 	book := Book{}
 	result = []Book{}
 	for _, d := range data {
-		fmt.Println("ID maybe", reflect.TypeOf(d[0].(uint64)), d[0].(uint64))
-		book.ID, book.Title, book.Author = uint(d[0].(uint64)), d[1].(string), d[2].(string)
+		book.ID = uint(d[0].(*big.Int).Uint64())
+		book.Title, book.Author = d[1].(string), d[2].(string)
 		result = append(result, book)
 	}
 
