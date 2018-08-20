@@ -2,6 +2,7 @@ package main
 
 import (
 	"net/http"
+	"os"
 	"strconv"
 
 	"github.com/labstack/echo"
@@ -10,8 +11,9 @@ import (
 	"dbbooks"
 )
 
-const dbname = "./ql.db"
 const table = "books"
+
+var dbname = "./ql.db"
 
 // ResultResponse : Create, Read 결과 반환용
 type ResultResponse struct{ Message string }
@@ -57,6 +59,10 @@ func delete(c echo.Context) error {
 }
 
 func main() {
+	if electronSite := os.Getenv("ELECTRONVUESITE"); len(electronSite) > 3 {
+		dbname = electronSite + "/ql.db"
+	}
+
 	echo.NotFoundHandler = func(c echo.Context) error {
 		errorResult := &ResultResponse{
 			Message: "Contents not found",
@@ -82,7 +88,7 @@ func main() {
 	e.PUT("/books", update)
 	e.DELETE("/books/:id", delete)
 
-	dbbooks.CreateTable("books", "./ql.db")
+	dbbooks.CreateTable("books", dbname)
 
 	e.Logger.Fatal(e.Start(":1323"))
 }
