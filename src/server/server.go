@@ -90,5 +90,6 @@ func main() {
 
 	dbbooks.CreateTable("books", dbname)
 
-	e.Logger.Fatal(e.Start(":1323"))
+	// e.Logger.Fatal(e.Start("127.0.0.1:1323")) // Electron에 붙일 때 방화벽 경고가 안 뜬다.
+	e.Logger.Fatal(e.Start(":1323")) // 0.0.0.0 은 Electron spawn시 방화벽 경고가 뜬다.
 }
