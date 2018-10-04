@@ -1,4 +1,4 @@
-package dbbooks
+package dbbooks // import "dbbooks"
 
 import (
 	"math/big"
