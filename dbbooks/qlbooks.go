@@ -89,7 +89,7 @@ func SelectData(id uint, table string, dbname string) (result []Book, err error)
 		return nil, err
 	}
 
-	data, _ := s[0].Rows(999, 0)
+	data, _ := s[0].Rows(-1, 0)
 
 	book := Book{}
 	result = []Book{}
